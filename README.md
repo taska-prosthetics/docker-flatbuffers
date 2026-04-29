@@ -5,15 +5,50 @@ Based on [neomantra/docker-flatbuffers](https://github.com/neomantra/docker-flat
 - Built with gcc toolchain only
 
 
-## Build Instructions
+## Pulling the image
 
-No CI/CD yet, manual build & push to docker hub.
+Images are published to the GitHub Container Registry (GHCR):
 
 ```
-docker build -t flatbuffers-tag .
-docker login
-docker tag flatbuffers-tag gtaska/flatbuffers:$FLATC_VER-$FLATCC_TAG
-docker push gtaska/flatbuffers:$FLATC_VER-$FLATCC_TAG
+docker pull ghcr.io/taska-prosthetics/docker-flatbuffers:v25.12.19-v0.6.1
+```
+
+Tags follow the pattern `<flatbuffers-version>-<flatcc-version>`.
+
+For reproducible builds, pin by digest:
+
+```
+docker pull ghcr.io/taska-prosthetics/docker-flatbuffers:v25.12.19-v0.6.1@sha256:<digest>
+```
+
+The digest for each published image is available on the
+[GHCR package page](https://github.com/taska-prosthetics/docker-flatbuffers/pkgs/container/docker-flatbuffers).
+
+
+## Releasing a new image
+
+Images are built and pushed automatically by the
+[`release.yaml`](.github/workflows/release.yaml) GitHub Actions workflow
+whenever a git tag is pushed to this repository.
+
+To publish a new image:
+
+1. Update `Dockerfile` with the desired `FLATBUFFERS_TARBALL` / `FLATCC_TARBALL` versions and labels.
+2. Commit and push the changes to a branch; open a PR and merge to `main`.
+3. Push a release tag matching the pattern `<flatbuffers-version>-<flatcc-version>`:
+
+```bash
+git tag v25.12.19-v0.6.1
+git push origin v25.12.19-v0.6.1
+```
+
+The workflow will build the Docker image and push it to GHCR under the pushed tag.
+
+
+## Local build
+
+```bash
+docker build -t flatbuffers-local .
 ```
 
 ## Copyright & License

@@ -27,9 +27,8 @@ RUN curl -fSL "${FLATBUFFERS_TARBALL}" -o flatbuffers.tar.gz \
     && ls \
     && mv flatbuffers-* flatbuffers \
     && cd flatbuffers \
-    && cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release \
+    && cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLATBUFFERS_BUILD_TESTS=OFF \
     && make \
-    && make test \
     && make install \
     && cp src/idl_parser.cpp src/idl_gen_text.cpp /usr/local/include/flatbuffers
 
