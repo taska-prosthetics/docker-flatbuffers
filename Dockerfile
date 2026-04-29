@@ -20,7 +20,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
 # FlatBuffer Build
 ###############################################################################
 
-ARG FLATBUFFERS_TARBALL="https://github.com/google/flatbuffers/archive/refs/tags/v25.2.10.tar.gz"
+ARG FLATBUFFERS_TARBALL="https://github.com/google/flatbuffers/archive/refs/tags/v25.12.19.tar.gz"
 
 RUN curl -fSL "${FLATBUFFERS_TARBALL}" -o flatbuffers.tar.gz \
     && tar xzf flatbuffers.tar.gz \
@@ -110,5 +110,5 @@ COPY --from=flatbuffer_build /flatcc/include/flatcc /usr/local/include/flatcc
 COPY --from=flatbuffer_build /flatcc/lib/*.a /usr/local/lib/
 
 LABEL OS="debian:bullseye-slim"
-LABEL FLATBUFFERS="v25.2.10"
+LABEL FLATBUFFERS="v25.12.19"
 LABEL FLATCC="v0.6.1"
