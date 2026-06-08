@@ -5,7 +5,7 @@
 # - Built with gcc toolchain only
 
 
-FROM debian:bullseye-slim AS flatbuffer_build
+FROM debian:trixie-slim AS flatbuffer_build
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -95,10 +95,10 @@ RUN curl -fSL "${FLATCC_TARBALL}" -o flatcc.tar.gz \
 # Final Image Composition
 ###############################################################################
 
-FROM debian:bullseye-slim
+FROM debian:trixie-slim
 
 ARG FLATBUFFERS_IMAGE_BASE="debian"
-ARG FLATBUFFERS_IMAGE_TAG="bullseye-slim"
+ARG FLATBUFFERS_IMAGE_TAG="trixie-slim"
 
 COPY --from=flatbuffer_build /usr/local/bin/flatc /usr/local/bin/flatc
 COPY --from=flatbuffer_build /usr/local/include/flatbuffers /usr/local/include/flatbuffers
@@ -109,6 +109,6 @@ COPY --from=flatbuffer_build /flatcc/bin/flatcc /usr/local/bin/flatcc
 COPY --from=flatbuffer_build /flatcc/include/flatcc /usr/local/include/flatcc
 COPY --from=flatbuffer_build /flatcc/lib/*.a /usr/local/lib/
 
-LABEL OS="debian:bullseye-slim"
+LABEL OS="debian:trixie-slim"
 LABEL FLATBUFFERS="v25.2.10"
 LABEL FLATCC="v0.6.1"
