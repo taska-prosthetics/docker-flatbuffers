@@ -20,7 +20,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
 # FlatBuffer Build
 ###############################################################################
 
-ARG FLATBUFFERS_TARBALL="https://github.com/google/flatbuffers/archive/refs/tags/v25.2.10.tar.gz"
+ARG FLATBUFFERS_TARBALL="https://github.com/google/flatbuffers/archive/refs/tags/v25.12.19.tar.gz"
 
 RUN curl -fSL "${FLATBUFFERS_TARBALL}" -o flatbuffers.tar.gz \
     && tar xzf flatbuffers.tar.gz \
