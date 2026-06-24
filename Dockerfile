@@ -13,8 +13,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         cmake \
         curl \
         make \
+	patch \
         g++
 
+COPY 0001-Python-derive-enums-from-IntEnum-Py3.4.patch .
 
 ###############################################################################
 # FlatBuffer Build
@@ -27,6 +29,7 @@ RUN curl -fSL "${FLATBUFFERS_TARBALL}" -o flatbuffers.tar.gz \
     && ls \
     && mv flatbuffers-* flatbuffers \
     && cd flatbuffers \
+    && patch -p1 < ../0001-Python-derive-enums-from-IntEnum-Py3.4.patch \
     && cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release \
     && make \
     && make test \

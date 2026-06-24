@@ -1,0 +1,51 @@
+From b23e4f9d80ce5f8de8a9144889eaed5bdd5726ee Mon Sep 17 00:00:00 2001
+From: Chris Hollis-Locke <chris.hollis-locke@taskaprosthetics.com>
+Date: Wed, 24 Jun 2026 13:25:57 +1200
+Subject: [PATCH] [Python] derive enums from IntEnum (Py3.4+)
+
+---
+ src/idl_gen_python.cpp | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
+
+diff --git a/src/idl_gen_python.cpp b/src/idl_gen_python.cpp
+index d325fee5..19c1860f 100644
+--- a/src/idl_gen_python.cpp
++++ b/src/idl_gen_python.cpp
+@@ -208,15 +208,8 @@ class PythonStubGenerator {
+ 
+   std::string EnumType(const EnumDef& enum_def, Imports* imports) const {
+     imports->Import("typing");
+-    const Import& import =
+-        imports->Import(ModuleFor(&enum_def), namer_.Type(enum_def));
+-
+-    std::string result = "";
+-    for (const EnumVal* val : enum_def.Vals()) {
+-      if (!result.empty()) result += ", ";
+-      result += import.name + "." + namer_.Variant(*val);
+-    }
+-    return "typing.Literal[" + result + "]";
++    imports->Import(ModuleFor(&enum_def), namer_.Type(enum_def));
++    return namer_.Type(enum_def);;
+   }
+ 
+   std::string TypeOf(const Type& type, Imports* imports) const {
+@@ -721,7 +714,7 @@ class PythonGenerator : public BaseGenerator {
+   // Begin enum code with a class declaration.
+   void BeginEnum(const EnumDef& enum_def, std::string* code_ptr) const {
+     auto& code = *code_ptr;
+-    code += "class " + namer_.Type(enum_def) + "(object):\n";
++    code += "class " + namer_.Type(enum_def) + "(IntEnum):\n";
+   }
+ 
+   // Starts a new line and then indents.
+@@ -2841,6 +2834,7 @@ class PythonGenerator : public BaseGenerator {
+     auto& code = *code_ptr;
+     code = code + "# " + FlatBuffersGeneratedWarning() + "\n\n";
+     code += "# namespace: " + name_space_name + "\n\n";
++    code += "from enum import IntEnum\n";
+ 
+     if (needs_imports) {
+       const std::string local_import = "." + mod;
+-- 
+2.53.0.windows.3
+
